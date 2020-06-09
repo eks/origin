@@ -34,3 +34,6 @@
 
 # Ignore docker environment file
 .env.docker
+
+# Ignore SimpleCov coverage files
+coverage
