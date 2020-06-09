@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    container_name: origin-test
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/origin-test
+    ports:
+      - "3000:3000"
+    env_file:
+      .env.docker
