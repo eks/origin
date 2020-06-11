@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "required": ["auto", "disability", "home", "life"],
+  "properties": {
+    "auto": {
+      "type": "string",
+      "default": "ineligible"
+    },
+    "disability": {
+      "type": "string",
+      "default": "ineligible"
+    },
+    "home": {
+      "type": "string",
+      "default": "ineligible"
+    },
+    "life": {
+      "type": "string",
+      "default": "ineligible"
+    }
+  }
+}
