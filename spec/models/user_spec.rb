@@ -25,7 +25,7 @@ RSpec.describe User, type: :model do
       second_user = build :user, email: user.email
       expect(second_user).not_to be_valid
 
-      second_user.login = 'new_email@example.com'
+      second_user.email = 'new_email@example.com'
       expect(second_user).to be_valid
     end
   end

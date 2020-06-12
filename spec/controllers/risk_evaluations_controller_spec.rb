@@ -1,18 +1,31 @@
 require 'rails_helper'
 
 RSpec.describe RiskEvaluationsController, type: :controller do
+  def token_generator(user_id)
+    JsonWebToken.encode(user_id: user_id)
+  end
+
   def json
     JSON.parse(response.body)
   end
-  # describe "POST risk_evaluations" do
-  #   it "returns http success" do
-  #     post "/risk_evaluations/create"
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+
 
   describe "POST risk_evaluations" do
+    context 'when not authorized' do
+      subject { post :create }
+
+      it 'return 401 status code' do
+        subject
+
+        expect(response).to have_http_status(:unauthorized)
+        expect(json['error']).to include('Not Authorized')
+      end
+    end
+
     context 'when valid parameters are provided' do
+      let!(:user) { create :user }
+      before { request.headers['authorization'] = token_generator(user.id) }
+
       let(:valid_attributes) do
         {
           "age": 35,
@@ -39,6 +52,9 @@ RSpec.describe RiskEvaluationsController, type: :controller do
     end
 
     context 'when clients are ineligible' do
+      let!(:user) { create :user }
+      before { request.headers['authorization'] = token_generator(user.id) }
+
       let(:valid_attributes) do
         {
           "age": 35,
@@ -96,6 +112,9 @@ RSpec.describe RiskEvaluationsController, type: :controller do
     end
 
     context "when client's profile" do
+      let!(:user) { create :user }
+      before { request.headers['authorization'] = token_generator(user.id) }
+
       let(:valid_attributes) do
         {
           "age": 35,
