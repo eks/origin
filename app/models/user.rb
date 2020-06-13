@@ -1,5 +1,11 @@
 class User < ApplicationRecord
   has_secure_password
+
+  has_one :house
+  has_one :vehicle
+  accepts_nested_attributes_for :house
+  accepts_nested_attributes_for :vehicle
+
   serialize :risk_questions, Array
 
   validates :age, :dependents, :income, :marital_status, :risk_questions, presence: true
@@ -7,10 +13,8 @@ class User < ApplicationRecord
   validates :income, numericality: { greater_than_or_equal_to: 0 }
   validates :marital_status, inclusion: { in: %w(single married),
     message: "%{value} is not a valid marital status" }
-  validates :email, presence: true, uniqueness: true
   validate :risk_answers
-
-  has_one :house
+  validates :email, presence: true, uniqueness: true
 
   private
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_13_144808) do
+ActiveRecord::Schema.define(version: 2020_06_13_175428) do
 
   create_table "houses", force: :cascade do |t|
     t.string "ownership_status"
@@ -33,5 +33,14 @@ ActiveRecord::Schema.define(version: 2020_06_13_144808) do
     t.string "risk_questions"
   end
 
+  create_table "vehicles", force: :cascade do |t|
+    t.integer "year"
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_vehicles_on_user_id"
+  end
+
   add_foreign_key "houses", "users"
+  add_foreign_key "vehicles", "users"
 end
