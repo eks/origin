@@ -8,5 +8,6 @@ FactoryBot.define do
     income { 0 }
     marital_status { 'married' }
     risk_questions { [0, 1, 0] }
+    # association(:house)
   end
 end

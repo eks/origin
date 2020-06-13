@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-   describe '#validations' do
-     it 'have valid factory' do
-       user = build :user
-       expect(user).to be_valid
-     end
+  describe '#validations' do
+    it 'have valid factory' do
+      user = build :user
+      expect(user).to be_valid
+    end
 
     it 'validates presence of email' do
       user = build(:user, email: nil)
@@ -108,4 +108,9 @@ RSpec.describe User, type: :model do
       expect(user.errors.messages[:risk_questions]).to include("must have 3 booleans")
     end
   end
+
+  describe '#associations' do
+    it { should have_one(:house) }
+  end
+
 end
