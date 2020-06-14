@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   has_one :house
   has_one :vehicle
+  has_many :risk_profiles
   accepts_nested_attributes_for :house
   accepts_nested_attributes_for :vehicle
 
