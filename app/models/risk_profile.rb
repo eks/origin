@@ -1,5 +1,6 @@
 class RiskProfile < ApplicationRecord
   belongs_to :user
+  has_one :score
 
   validates :life, :home, :auto, :disability, presence: true
   validates :life, :home, :auto, :disability, inclusion: {

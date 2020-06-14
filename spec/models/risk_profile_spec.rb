@@ -67,5 +67,6 @@ RSpec.describe RiskProfile, type: :model do
 
   describe '#associations' do
     it { should belong_to(:user) }
+    it { should have_one(:score) }
   end
 end
