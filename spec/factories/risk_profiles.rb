@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :risk_profile do
-    life { "MyString" }
-    home { "MyString" }
-    auto { "MyString" }
-    disability { "MyString" }
-    user { nil }
+    life       { "ineligible" }
+    home       { "ineligible" }
+    auto       { "ineligible" }
+    disability { "ineligible" }
+    association(:user)
   end
 end
