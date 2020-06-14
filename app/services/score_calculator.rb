@@ -16,6 +16,8 @@ class ScoreCalculator
     for_home         if house_ownership && house_ownership == 'mortgaged'
     for_auto         if vehicle_year
 
+    persist_scores
+    persist_profiles
     ensurance_profile
   end
 
@@ -86,6 +88,19 @@ class ScoreCalculator
       home: house_ownership ? ensurance_line(@home_score) : 'ineligible',
       auto: vehicle_year ? ensurance_line(@auto_score) : 'ineligible',
       disability: @user.age < 60 && @user.income.positive? ? ensurance_line(@disability_score) : 'ineligible' }
+  end
+
+  def persist_profiles
+    risk_profile = @user.risk_profiles.new(ensurance_profile)
+
+    if risk_profile.save
+      risk_profile
+    else
+      risk_profile.errors.messages
+    end
+  end
+
+  def persist_scores
   end
 
   def ensurance_line(score)

@@ -19,7 +19,7 @@ RSpec.describe RiskProfile, type: :model do
       invalid = 'invalid'
       profile = build(:risk_profile, life: invalid)
       expect(profile).to be_invalid
-      expect(profile.errors.messages[:life]).to include("#{invalid} is not a valid profile")
+      expect(profile.errors.messages[:life]).to include("#{invalid} is not a valid option")
     end
 
     it 'validates presence of home' do
@@ -33,7 +33,7 @@ RSpec.describe RiskProfile, type: :model do
       invalid = 'invalid'
       profile = build(:risk_profile, home: invalid)
       expect(profile).to be_invalid
-      expect(profile.errors.messages[:home]).to include("#{invalid} is not a valid profile")
+      expect(profile.errors.messages[:home]).to include("#{invalid} is not a valid option")
     end
 
     it 'validates presence of auto' do
@@ -47,7 +47,7 @@ RSpec.describe RiskProfile, type: :model do
       invalid = 'invalid'
       profile = build(:risk_profile, auto: invalid)
       expect(profile).to be_invalid
-      expect(profile.errors.messages[:auto]).to include("#{invalid} is not a valid profile")
+      expect(profile.errors.messages[:auto]).to include("#{invalid} is not a valid option")
     end
 
     it 'validates presence of disability' do
@@ -61,7 +61,7 @@ RSpec.describe RiskProfile, type: :model do
       invalid = 'invalid'
       profile = build(:risk_profile, disability: invalid)
       expect(profile).to be_invalid
-      expect(profile.errors.messages[:disability]).to include("#{invalid} is not a valid profile")
+      expect(profile.errors.messages[:disability]).to include("#{invalid} is not a valid option")
     end
   end
 
