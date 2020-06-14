@@ -2,121 +2,90 @@
 
 class ScoreCalculator
   def initialize(user)
-    base_score = calculate_base_score(user.risk_questions)
-    @life_score = @home_score = @auto_score = @disability_score = base_score
-
-    @income         = user.income
-    @house          = user.house
-    @vehicle        = user.vehicle
-    @age            = user.age
-    @dependents     = user.dependents
-    @marital_status = user.marital_status
+    @user = user
   end
 
   def calculate
-    life_young              if elegible_for_life_insurance?
-    life_middle_age         if elegible_for_life_insurance?
-    desability_high_income  if elegible_for_disability_insurance?
-    home                    if elegible_for_disability_insurance?
-    desability              if elegible_for_disability_insurance?
-    life                    if elegible_for_life_insurance?
-    auto                    if elegible_for_life_insurance?
+    @life_score = @home_score = @auto_score = @disability_score = base_score
 
-    { life: elegible_for_life_insurance? ? ensurance_line(@life_score) : 'ineligible',
-      home: elegible_for_home_insurance? ? ensurance_line(@home_score) : 'ineligible',
-      auto: elegible_for_auto_insurance? ? ensurance_line(@auto_score) : 'ineligible',
-      disability: elegible_for_disability_insurance? ? ensurance_line(@disability_score) : 'ineligible' }
+    for_youngsters   if @user.age < 30
+    for_middle_agers if @user.age >= 30 && @user.age <= 40
+    for_200k_income  if @user.age < 60 && @user.income >= 200_000
+    for_dependents   if @user.age < 60 && @user.income.positive? && @user.dependents.positive?
+    for_life         if @user.age < 60 && @user.marital_status == 'married'
+    for_home         if house_ownership && house_ownership == 'mortgaged'
+    for_auto         if vehicle_year
+
+    ensurance_profile
   end
 
   private
 
-  def life
-    if elegible_for_life_insurance? && @marital_status == 'married'
-      @life_score += 1
-      @disability_score -= 1
-    end
+  def base_score
+    @user.risk_questions.reduce(:+)
   end
 
-  def life_young
-    if elegible_for_life_insurance? && @age < 30
-      @life_score -= 2
-      @home_score -= 2
-      @auto_score -= 2
-      @disability_score -= 2
-    end
+  def house_ownership
+    return @user.house.ownership_status unless @user.house.nil?
+
+    false
   end
 
-  def life_middle_age
-    if elegible_for_life_insurance? && @age >= 30 && @age <= 40
-      @life_score -= 1
-      @home_score -= 1
-      @auto_score -= 1
-      @disability_score -= 1
-    end
+  def vehicle_year
+    return @user.vehicle.year unless @user.vehicle.nil?
+
+    false
   end
 
-  def desability_high_income
-    if elegible_for_disability_insurance? && @income >= 200_000
-      @life_score -= 1
-      @home_score -= 1
-      @auto_score -= 1
-      @disability_score -= 1
-    end
+  def for_life
+    @life_score += 1
+    @disability_score -= 1
   end
 
-  def desability
-    if elegible_for_disability_insurance? && @dependents.positive?
-      @life_score += 1
-      @disability_score += 1
-    end
+  def for_youngsters
+    @life_score -= 2
+    @home_score -= 2
+    @auto_score -= 2
+    @disability_score -= 2
   end
 
-  def home
-    if elegible_for_home_insurance? && @house[:ownership_status] == 'mortgaged'
-      @home_score += 1
-      @disability_score += 1
-    end
+  def for_middle_agers
+    @life_score -= 1
+    @home_score -= 1
+    @auto_score -= 1
+    @disability_score -= 1
   end
 
-  def auto
-    @auto_score += 1 if elegible_for_auto_insurance? && vehicle_age(@vehicle) <= 5
+  def for_200k_income
+    @life_score -= 1
+    @home_score -= 1
+    @auto_score -= 1
+    @disability_score -= 1
   end
 
-  def calculate_base_score(risk_questions)
-    risk_questions.reduce(:+)
-    # risk_questions.map(&:to_i).reduce(:+)
+  def for_dependents
+    @life_score += 1
+    @disability_score += 1
   end
 
-  def vehicle_age(vehicle)
-    Date.today.strftime('%Y').to_i - vehicle[:year].to_i
+  def for_home
+    @home_score += 1
+    @disability_score += 1
   end
 
-  def not_present?(field)
-    field.blank? || field == 0
+  def for_auto
+    @auto_score += 1 if vehicle_age <= 4
   end
 
-  def elegible_for_home_insurance?
-    return false if not_present?(@house)
-
-    true
+  def vehicle_age
+    Date.today.strftime('%Y').to_i - vehicle_year
   end
 
-  def elegible_for_auto_insurance?
-    return false if not_present?(@vehicle)
-
-    true
-  end
-
-  def elegible_for_life_insurance?
-    return false if @age > 60
-
-    true
-  end
-
-  def elegible_for_disability_insurance?
-    return false if @income.zero? || @age > 60
-
-    true
+  def ensurance_profile
+    { life: @user.age < 60 ? ensurance_line(@life_score) : 'ineligible',
+      home: house_ownership ? ensurance_line(@home_score) : 'ineligible',
+      auto: vehicle_year ? ensurance_line(@auto_score) : 'ineligible',
+      disability: @user.age < 60 && @user.income.positive? ? ensurance_line(@disability_score) : 'ineligible' }
   end
 
   def ensurance_line(score)
