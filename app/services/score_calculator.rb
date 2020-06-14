@@ -14,13 +14,13 @@ class ScoreCalculator
   end
 
   def calculate
-    life_young
-    life_middle_age
-    desability_high_income
-    home
-    desability
-    life
-    auto
+    life_young if elegible_for_life_insurance?
+    life_middle_age if elegible_for_life_insurance?
+    desability_high_income if elegible_for_disability_insurance?
+    home if elegible_for_disability_insurance?
+    desability if elegible_for_disability_insurance?
+    life if elegible_for_life_insurance?
+    auto if elegible_for_life_insurance?
 
     { life: elegible_for_life_insurance? ? ensurance_line(@life_score) : 'ineligible',
       home: elegible_for_home_insurance? ? ensurance_line(@home_score) : 'ineligible',
@@ -83,7 +83,8 @@ class ScoreCalculator
   end
 
   def calculate_base_score(risk_questions)
-    risk_questions.map(&:to_i).reduce(:+)
+    risk_questions.reduce(:+)
+    # risk_questions.map(&:to_i).reduce(:+)
   end
 
   def vehicle_age(vehicle)

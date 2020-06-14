@@ -9,7 +9,6 @@ RSpec.describe RiskEvaluationsController, type: :controller do
     JSON.parse(response.body)
   end
 
-
   describe "POST risk_evaluations" do
     context 'when not authorized' do
       subject { post :create }

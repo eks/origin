@@ -26,11 +26,11 @@ ActiveRecord::Schema.define(version: 2020_06_13_175428) do
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "age"
-    t.integer "dependents"
-    t.decimal "income", precision: 10, scale: 2
-    t.string "marital_status"
-    t.string "risk_questions"
+    t.integer "age", default: 0
+    t.integer "dependents", default: 0
+    t.decimal "income", precision: 10, scale: 2, default: "0.0"
+    t.string "marital_status", default: "single"
+    t.string "risk_questions", default: "---\n- 0\n- 0\n- 0\n"
   end
 
   create_table "vehicles", force: :cascade do |t|
