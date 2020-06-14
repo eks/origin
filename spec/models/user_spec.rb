@@ -111,6 +111,6 @@ RSpec.describe User, type: :model do
 
   describe '#associations' do
     it { should have_one(:house) }
+    it { should have_one(:vehicle) }
   end
-
 end
