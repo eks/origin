@@ -1,9 +1,9 @@
 class RiskEvaluationsController < ApplicationController
   def create
     if current_user.update(user_params)
-      render json: risk_profile(params).to_json, status: :created
+      render json: risk_profile.to_json, status: :created
     else
-      render json: current_user.to_json, status: :unprocessable_entity
+      render json: current_user.errors, status: :unprocessable_entity
     end
   end
 
@@ -25,7 +25,7 @@ class RiskEvaluationsController < ApplicationController
     )
   end
 
-  def risk_profile(params)
-    return ScoreCalculator.new(params).calculate
+  def risk_profile
+    return ScoreCalculator.new(current_user).calculate
   end
 end

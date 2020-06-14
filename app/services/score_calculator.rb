@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
 class ScoreCalculator
-  def initialize(params)
-    base_score = calculate_base_score(params[:risk_questions])
+  def initialize(user)
+    base_score = calculate_base_score(user.risk_questions)
     @life_score = @home_score = @auto_score = @disability_score = base_score
 
-    @income = params[:income].to_i
-    @house = params[:house]
-    @vehicle = params[:vehicle]
-    @age = params[:age].to_i
-    @dependents = params[:dependents].to_i
-    @marital_status = params[:marital_status]
+    @income         = user.income
+    @house          = user.house
+    @vehicle        = user.vehicle
+    @age            = user.age
+    @dependents     = user.dependents
+    @marital_status = user.marital_status
   end
 
   def calculate
-    life_young if elegible_for_life_insurance?
-    life_middle_age if elegible_for_life_insurance?
-    desability_high_income if elegible_for_disability_insurance?
-    home if elegible_for_disability_insurance?
-    desability if elegible_for_disability_insurance?
-    life if elegible_for_life_insurance?
-    auto if elegible_for_life_insurance?
+    life_young              if elegible_for_life_insurance?
+    life_middle_age         if elegible_for_life_insurance?
+    desability_high_income  if elegible_for_disability_insurance?
+    home                    if elegible_for_disability_insurance?
+    desability              if elegible_for_disability_insurance?
+    life                    if elegible_for_life_insurance?
+    auto                    if elegible_for_life_insurance?
 
     { life: elegible_for_life_insurance? ? ensurance_line(@life_score) : 'ineligible',
       home: elegible_for_home_insurance? ? ensurance_line(@home_score) : 'ineligible',
