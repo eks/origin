@@ -91,12 +91,14 @@ class ScoreCalculator
 
   def persist_profiles
     risk_profile = @user.risk_profiles.new(ensurance_profile)
-    risk_profile.build_score({
-      life: @life_score,
-      home: @home_score,
-      auto: @auto_score,
-      disability: @disability_score
-    })
+    risk_profile.build_score(
+      {
+        life: @life_score,
+        home: @home_score,
+        auto: @auto_score,
+        disability: @disability_score
+      }
+    )
 
     risk_profile.save
   end

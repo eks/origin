@@ -17,8 +17,8 @@ RSpec.describe ScoreCalculator do
     end
 
     context 'when complete user data is provided' do
-      let!(:home) { create :house, user: user, ownership_status: 'owned' }
-      let!(:auto) { create :vehicle, user: user, year: 2018 }
+      let!(:home) { build :house, user: user, ownership_status: 'owned' }
+      let!(:auto) { build :vehicle, user: user, year: 2018 }
 
       it 'return proper profile' do
         expect(subject).to include({
@@ -31,11 +31,11 @@ RSpec.describe ScoreCalculator do
     end
 
     context 'when data is persisted' do
-      let!(:home) { create :house, user: user, ownership_status: 'owned' }
-      let!(:auto) { create :vehicle, user: user, year: 2018 }
-
-      it 'successfuly' do
+      it 'persists risk_profile successfuly' do
         expect{ subject }.to change{ RiskProfile.count }.by(1)
+      end
+
+      it 'persists score successfuly' do
         expect{ subject }.to change{ Score.count }.by(1)
       end
     end
