@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 2020_06_14_175020) do
 
   create_table "houses", force: :cascade do |t|
-    t.string "ownership_status"
+    t.string "ownership_status", default: "mortgaged"
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2020_06_14_175020) do
   end
 
   create_table "vehicles", force: :cascade do |t|
-    t.integer "year"
+    t.integer "year", default: 2000
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
