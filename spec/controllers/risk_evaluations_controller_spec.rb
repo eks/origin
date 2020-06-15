@@ -104,12 +104,11 @@ RSpec.describe RiskEvaluationsController, type: :controller do
             })
           end
 
-          it 'creates risk_profile' do
-            expect{ subject }.to change{ RiskProfile.count }.by(1)
-          end
+          it 'without house data' do
+            valid_attributes.delete(:house)
+            subject
 
-          it 'creates score' do
-            expect{ subject }.to change{ Score.count }.by(1)
+            expect(user.house).to be_nil
           end
 
           it 'updates house onwership_status' do
@@ -119,7 +118,7 @@ RSpec.describe RiskEvaluationsController, type: :controller do
             expect(user.house.ownership_status).to eq('mortgaged')
           end
 
-          it 'updates vehicle year' do
+          it 'without vehicle data' do
             valid_attributes.delete(:vehicle)
             subject
 
@@ -131,6 +130,14 @@ RSpec.describe RiskEvaluationsController, type: :controller do
             subject
 
             expect(user.vehicle.year).to eq(2015)
+          end
+#=============================================
+          it 'creates risk_profile' do
+            expect{ subject }.to change{ RiskProfile.count }.by(1)
+          end
+
+          it 'creates score' do
+            expect{ subject }.to change{ Score.count }.by(1)
           end
         end
 
