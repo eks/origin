@@ -67,13 +67,14 @@ The response to the previously executed request will be a JSON with the risk pro
 The `-i` flag will show the HEADERS of the response and the `Location` header will be present. Location is setted with the path to the risk profile created in the last reuqest to be accessed at any time later.
 
 ### Sign Up
-The application have an endpoint to sign up nem users. To do so, a POST request is needed, like so:
+The application have an endpoint to sign up new users. To do so, a POST request is needed, like so:
 ```sh
 $ curl -X POST http://localhost:3000/sign_up -H "Content-Type: application/json" \
   -d '{"email": "new-mail@example.com", "password": "123123123", "password_confirmation": "123123123"}'
 ```
 
-As the application is available on [Heroku](https://origin-eks.herokuapp.com), it can be used exchanging `http://localhost:3000` for `https://origin-eks.herokuapp.com` in cURL commands.
+### Using on Heroku
+As the application is available on [Heroku](https://origin-eks.herokuapp.com), it can be used exchanging `http://localhost:3000` for `https://origin-eks.herokuapp.com` in all cURL request commands.
 
 ## Running tests locally
 To run tests
