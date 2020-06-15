@@ -16,7 +16,6 @@ class ScoreCalculator
     for_home         if house_ownership && house_ownership == 'mortgaged'
     for_auto         if vehicle_year
 
-    persist_scores
     persist_profiles
     ensurance_profile
   end
@@ -92,15 +91,14 @@ class ScoreCalculator
 
   def persist_profiles
     risk_profile = @user.risk_profiles.new(ensurance_profile)
+    risk_profile.build_score({
+      life: @life_score,
+      home: @home_score,
+      auto: @auto_score,
+      disability: @disability_score
+    })
 
-    if risk_profile.save
-      risk_profile
-    else
-      risk_profile.errors.messages
-    end
-  end
-
-  def persist_scores
+    risk_profile.save
   end
 
   def ensurance_line(score)
